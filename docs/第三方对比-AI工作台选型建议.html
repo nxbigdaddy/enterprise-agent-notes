@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>企业 AI 工作台 · 与第三方 AI 工作台对比与选型建议</title>
+<style>
+  :root{
+    --primary:#3065DA; --primary-soft:#EAF0FF; --primary-border:#DCE7FF;
+    --text:#172033; --text-2:#5F6B7C; --muted:#8A94A6;
+    --line:#E5E9F0; --line-2:#F0F2F6; --canvas:#F4F6FA; --surface:#FFFFFF;
+    --success:#167D56; --success-soft:#E8F7F1;
+    --warning:#A06111; --warning-soft:#FFF5E4;
+    --danger:#BC4141; --danger-soft:#FDECEA;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--canvas); color:var(--text);
+    font-family:"Microsoft YaHei UI","Microsoft YaHei","PingFang SC","Hiragino Sans GB",system-ui,-apple-system,sans-serif;
+    font-size:13.5px; line-height:1.75; -webkit-font-smoothing:antialiased;}
+  .doc{max-width:1180px; margin:0 auto; padding:32px 20px 72px}
+  .page{background:var(--surface); border:1px solid var(--line); border-radius:16px;
+    padding:42px 52px 46px; margin-bottom:30px; box-shadow:0 8px 24px rgba(26,45,78,.045);}
+  .page-head{display:flex; justify-content:space-between; align-items:flex-end; gap:24px;
+    border-bottom:2px solid var(--line); padding-bottom:14px; margin-bottom:26px;}
+  .page-head h2{margin:0; font-size:21px; letter-spacing:-.01em}
+  .page-head .kicker{color:var(--text-2); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; margin:0 0 4px}
+  .page-no{color:var(--muted); font-size:11.5px; letter-spacing:.1em; font-weight:700; white-space:nowrap}
+
+  h3{margin:28px 0 12px; font-size:15.5px}
+  h3:first-of-type{margin-top:6px}
+  p{margin:0 0 12px}
+  ul{margin:0 0 12px; padding-left:20px}
+  li{margin:3px 0}
+  code{font-family:"Cascadia Code",Consolas,monospace; background:var(--canvas); color:var(--primary); padding:1px 5px; border-radius:5px; font-size:12px}
+
+  .cover{border-top:5px solid var(--primary)}
+  .cover .brandrow{display:flex; align-items:center; gap:14px; margin-bottom:28px}
+  .mark{width:46px;height:46px;border-radius:12px;background:var(--primary);color:#fff;
+        display:grid;place-items:center;font-weight:800;font-size:17px}
+  .brandtxt strong{display:block; font-size:15px}
+  .brandtxt span{display:block; color:var(--muted); font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin-top:2px}
+  .cover h1{margin:0 0 10px; font-size:32px; line-height:1.22; letter-spacing:-.02em}
+  .cover .sub{margin:0 0 24px; color:var(--text-2); font-size:15px}
+
+  table{width:100%; border-collapse:collapse; margin:6px 0 18px; font-size:12.6px}
+  th{text-align:left; background:var(--canvas); color:var(--text-2); font-weight:700;
+     padding:10px 12px; border-bottom:1px solid var(--line); font-size:12px; vertical-align:bottom}
+  td{padding:10px 12px; border-bottom:1px solid var(--line-2); vertical-align:top}
+  tr:last-child td{border-bottom:0}
+  td strong{display:block}
+  td small{display:block; color:var(--text-2); margin-top:3px; font-size:11.5px}
+  .col-us{background:#FBFCFE}
+
+  .callout{border-left:4px solid var(--primary); background:var(--primary-soft);
+           border-radius:0 12px 12px 0; padding:16px 20px; margin:20px 0}
+  .callout strong{color:var(--primary)}
+  .note{border-left:4px solid var(--warning); background:var(--warning-soft);
+        border-radius:0 12px 12px 0; padding:16px 20px; margin:20px 0; color:#6b4713}
+  .ok{border-left:4px solid var(--success); background:var(--success-soft);
+      border-radius:0 12px 12px 0; padding:16px 20px; margin:20px 0; color:#0f5c40}
+  .risk{border-left:4px solid var(--danger); background:var(--danger-soft);
+      border-radius:0 12px 12px 0; padding:16px 20px; margin:20px 0; color:#7d2a2a}
+
+  .cards{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin:8px 0 4px}
+  .card{border:1px solid var(--line); border-radius:12px; padding:18px 20px}
+  .card h4{margin:0 0 8px; font-size:14.5px}
+  .card ul{padding-left:18px; margin:0}
+  .card li{font-size:12.8px; color:var(--text-2)}
+  .card li b{color:var(--text); font-weight:650}
+
+  .tag{display:inline-block; font-size:11px; font-weight:700; border-radius:999px; padding:2px 9px; white-space:nowrap}
+  .tag.us{background:var(--success-soft); color:var(--success)}
+  .tag.them{background:var(--primary-soft); color:var(--primary)}
+  .tag.warn{background:var(--warning-soft); color:var(--warning)}
+  .tag.risk{background:var(--danger-soft); color:var(--danger)}
+
+  .foot{margin-top:26px; padding-top:14px; border-top:1px solid var(--line);
+        display:flex; justify-content:space-between; color:var(--muted); font-size:11px}
+  a{color:var(--primary); text-decoration:none}
+  a:hover{text-decoration:underline}
+  .src{font-size:12px; color:var(--text-2)}
+  .src li{margin:5px 0}
+
+  @media (max-width:1000px){
+    .cards{grid-template-columns:1fr}
+    .page{padding:28px 22px}
+  }
+  @media print{
+    @page{size:A4 landscape; margin:10mm}
+    body{background:#fff; font-size:11.5px}
+    .doc{max-width:none; padding:0}
+    .page{border:0;border-radius:0;box-shadow:none;margin:0;padding:0 0 6mm;
+          break-after:page; page-break-after:always;}
+    .page:last-child{break-after:auto; page-break-after:auto}
+    .cover{border-top:0;padding-top:0}
+    table{font-size:10.5px}
+    th,td{padding:6px 8px}
+    h3{margin-top:16px}
+    a{color:inherit; text-decoration:none}
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <!-- 页 1 -->
+  <section class="page cover">
+    <div class="brandrow">
+      <div class="mark">对比</div>
+      <div class="brandtxt">
+        <strong>企业 AI 工作台</strong>
+        <span>Build vs Buy</span>
+      </div>
+    </div>
+
+    <h1>与第三方 AI 工作台的对比与选型建议</h1>
+    <p class="sub">对比对象以腾讯 WorkBuddy 企业版为主要参照，兼列 Microsoft Copilot Studio、Salesforce Agentforce、Google Vertex、IBM watsonx、Dify 等代表平台</p>
+
+    <div class="callout">
+      <strong>一句话结论：</strong>
+      第三方产品在<b>通用生产力与技能生态</b>上远超自建（技能市场上万项、文档协同、7×24 数字员工、多 IM 触达），
+      但在<b>公司级的模型管控、数据分级、额度成本对账、以及"申请—审批—执行—对账"的企业系统操作闭环</b>上，
+      采购产品无法替代自建平台。两者不是替代关系，而是分层关系。
+    </div>
+
+    <h3>先明确对比对象</h3>
+    <p>
+      <strong>WorkBuddy</strong> 是腾讯的桌面端 AI 智能体产品，与面向研发的 CodeBuddy、面向创意的妙境 Miora、面向交互设计的 Ardot
+      同属 Buddy 家族。2026 年 6 月腾讯发布 <strong>WorkBuddy 企业版（WorkBuddy Enterprise）及办公智能体套件 Agent Suite</strong>，
+      定位为"企业 AI 办公工作台"，包含<strong>数字员工</strong>、<strong>人机协同的"项目"模式</strong>、
+      <strong>企业级管理后台</strong>三大核心模块，并把腾讯文档、腾讯网盘、腾讯乐享原生接入。
+      支持<strong>公有云、VPC 专项、私有</strong>三种交付模式，订阅价格按坐席与积分计（个人版 $10/月起，团队版 $40/坐席/月起）。
+    </p>
+
+    <div class="note">
+      <strong>资料来源与可信度提示：</strong>
+      本轮对比中关于 WorkBuddy 的能力、交付模式与价格，来自<b>腾讯官方文档与厂商新闻稿</b>，
+      不是我们独立测试的结论。涉及"全链路安全防护""统一治理审计"等表述属厂商口径，
+      具体技术措施与私有化交付范围未公开，<b>采购前需厂商提供书面材料并做验证性测试</b>。
+    </div>
+
+    <div class="foot"><span>企业 AI 工作台 · 第三方对比与选型建议</span><span>第 1 页 / 共 5 页</span></div>
+  </section>
+
+  <!-- 页 2：总表 -->
+  <section class="page">
+    <div class="page-head">
+      <div>
+        <p class="kicker">Chapter 01</p>
+        <h2>逐维度对比总表</h2>
+      </div>
+      <span class="page-no">第 2 页 / 共 5 页</span>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width:110px">维度</th>
+          <th style="width:38%">本系统（企业 AI 工作台 v0.4.0，自建）</th>
+          <th>WorkBuddy 企业版（腾讯，商用）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>产品定位</strong></td>
+          <td class="col-us">公司内部 AI 底座：把模型、身份、额度、数据边界、审计集中管控</td>
+          <td>商用"企业 AI 办公工作台"：面向全员办公提效与组织级 Agent 治理</td>
+        </tr>
+        <tr>
+          <td><strong>交付与<br>数据驻留</strong></td>
+          <td class="col-us">私有化部署（Docker Compose + 1Panel），已有 staging／production 双环境</td>
+          <td>公有云／VPC 专项／私有三种模式可选；私有化版本的实际范围与费用未公开</td>
+        </tr>
+        <tr>
+          <td><strong>模型接入</strong></td>
+          <td class="col-us">自建统一网关，<b>逻辑模型→实际模型</b>路由，可同时接外部与自建模型；密钥只在服务端</td>
+          <td>支持模型资源接入与自定义模型，底层依托腾讯云与混元</td>
+        </tr>
+        <tr>
+          <td><strong>身份权限</strong></td>
+          <td class="col-us">企业微信身份 + 部门目录同步；管理员／审计员／员工三角色；访问策略按范围授权</td>
+          <td>组织架构管理、成员授权控制、角色边界隔离；基于腾讯云 One ID 统一身份</td>
+        </tr>
+        <tr>
+          <td><strong>数据边界</strong></td>
+          <td class="col-us"><b>模型按"允许处理的数据等级"配置</b>，越权请求直接拒绝；邮件发送前本地做敏感内容检查</td>
+          <td>宣称覆盖输入到输出、存储到运行的全链路安全防护（细节未公开）</td>
+        </tr>
+        <tr>
+          <td><strong>对话与知识</strong></td>
+          <td class="col-us">多模型对话、来源引用、逐条反馈；知识库以自建 MaxKB 为检索组件，<b>权限判定留在公司侧</b></td>
+          <td>数字员工 + 腾讯乐享知识库作为"记忆底座"，知识在使用中自我完善</td>
+        </tr>
+        <tr>
+          <td><strong>任务执行</strong></td>
+          <td class="col-us">先生成<b>可复核的执行计划</b>再执行，逐步审批；本机／公司云端双边界清晰；产出 DOCX／XLSX／PPTX／PDF 并登记 SHA-256</td>
+          <td>数字员工部署在云端 <b>7×24 运行</b>，连接知识库与业务系统；"项目"模式支持人与 Agent 接力协作</td>
+        </tr>
+        <tr>
+          <td><strong>邮件处理</strong></td>
+          <td class="col-us">自建 IMAP／SMTP 多账户、智能视图、规则引擎、定时发送、签名模板、<b>DLP 与邮件治理策略</b></td>
+          <td>生态内可接 QQ 邮箱等连接器；<b>组织级邮件治理未见公开说明</b></td>
+        </tr>
+        <tr>
+          <td><strong>企业系统<br>连接</strong></td>
+          <td class="col-us">管理员预定义只读 SQL／HTTP（主机白名单、参数白名单）；<b>业务写操作必须申请→审批→执行</b>，幂等可对账</td>
+          <td>Connector 基于 One ID，可接 OA 审批、CRM、项目管理工具及腾讯系产品</td>
+        </tr>
+        <tr>
+          <td><strong>审批与审计</strong></td>
+          <td class="col-us">任务审批、业务写操作审批、审计日志检索与导出、<b>用量与账单对账</b>（差异单独记录）</td>
+          <td>统一治理审计、成员用量统计、部门归集分析、成本持续优化</td>
+        </tr>
+        <tr>
+          <td><strong>技能生态</strong></td>
+          <td class="col-us"><span class="tag warn">明显偏弱</span> 内置扩展 + 已复核签名的外部扩展 + MCP 工具，数量为个位数到十几项</td>
+          <td><span class="tag them">显著优势</span> Skill 市场<b>收录过万技能</b>，覆盖文档办公、前端设计、浏览器自动化、营销 SEO、云部署诊断；支持封装企业专属 Skill</td>
+        </tr>
+        <tr>
+          <td><strong>多端覆盖</strong></td>
+          <td class="col-us">桌面客户端（12 模块）+ 管理后台（21 页面）+ 企微移动端免登问答</td>
+          <td><span class="tag them">显著优势</span> 桌面端为主，另可接微信、企业微信、飞书、钉钉、QQ、Slack、Telegram、Discord</td>
+        </tr>
+        <tr>
+          <td><strong>计费方式</strong></td>
+          <td class="col-us"><b>无订阅费</b>；成本 = 服务器 + 模型用量（按实际调用计）</td>
+          <td>按坐席 + 积分：团队版 <b>$40／坐席／月</b>（年付 $480／坐席／年），超出需购买积分加量包</td>
+        </tr>
+        <tr>
+          <td><strong>定制能力</strong></td>
+          <td class="col-us"><b>代码在手</b>，任何本公司流程都能改；改动当天可上线</td>
+          <td>通过开放 API（WorkBuddy Management Agent）、垂类 Agent 或私有化定制，节奏受厂商路线约束</td>
+        </tr>
+        <tr>
+          <td><strong>迭代速度</strong></td>
+          <td class="col-us"><span class="tag warn">受人力限制</span> 单团队维护，功能铺开与质量收口交替推进</td>
+          <td><span class="tag them">厂商优势</span> 官方称发布 3 个月内累计交付 43 个版本（平均约 2 天一次更新）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="foot"><span>企业 AI 工作台 · 第三方对比与选型建议</span><span>第 2 页 / 共 5 页</span></div>
+  </section>
+
+  <!-- 页 3：其他代表平台 -->
+  <section class="page">
+    <div class="page-head">
+      <div>
+        <p class="kicker">Chapter 02</p>
+        <h2>其他代表平台的定位与国内落地障碍</h2>
+      </div>
+      <span class="page-no">第 3 页 / 共 5 页</span>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th style="width:200px">平台</th><th style="width:32%">核心优势</th><th>在国内企业落地的关键障碍</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Microsoft<br>Copilot Studio</strong></td>
+          <td>与 M365 全栈原生集成，1400+ Power Platform 连接器，低代码门槛低，企业治理体系成熟</td>
+          <td>"数据在 Microsoft Graph 里"这一前提在多数国内企业不成立；国内 M365 渗透率低；接钉钉／企微／本土 ERP 需大量定制</td>
+        </tr>
+        <tr>
+          <td><strong>Salesforce<br>Agentforce</strong></td>
+          <td>直接在 Salesforce 数据模型上运行，客户数据无需同步层，客服与销售自动化决策能力强</td>
+          <td>Salesforce CRM 在国内渗透率极低；<b>不支持私有化部署</b>；离开其生态后集成成本高</td>
+        </tr>
+        <tr>
+          <td><strong>Google<br>Vertex／Gemini</strong></td>
+          <td>模型生态最丰富（200+ 基础模型，可混用 Gemini／Claude／Llama），原生支持 MCP，合规资质完善</td>
+          <td>Google Cloud 在中国大陆不可用，<b>本质上无法直接落地</b>；按量计费结构复杂，账单难预测</td>
+        </tr>
+        <tr>
+          <td><strong>IBM<br>watsonx Orchestrate</strong></td>
+          <td>决策可追溯到数据源与推理路径，合规审计能力业界领先；与 SAP、ServiceNow 有预置集成</td>
+          <td>国内本地支持资源有限；采购与实施周期长；与国内本土系统的预置集成几乎为零</td>
+        </tr>
+        <tr>
+          <td><strong>Dify／LangChain<br>（开源自建）</strong></td>
+          <td>高度灵活、技术完全自主可控，适合有专职 AI 工程团队的团队</td>
+          <td>开发门槛高，缺少开箱即用的行业场景与技能生态，<b>需持续工程投入维护</b></td>
+        </tr>
+        <tr>
+          <td><strong>国内云厂商平台</strong><br><small>百度千帆／阿里百炼／腾讯云</small></td>
+          <td>数据主权有保障，与国内主流系统集成相对顺畅，生态内一站式</td>
+          <td>平台绑定效应明显；在强专业性场景的行业 Know-how 积累有限</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>行业选型的五个判据（可直接用于本公司的决策会）</h3>
+    <div class="cards">
+      <div class="card">
+        <h4>① 数据能不能出企业边界？</h4>
+        <ul><li>不能 → 私有化方案优先，多数国外 SaaS 直接出局。</li>
+            <li><b>本系统与 WorkBuddy 私有化模式都满足</b>，这一条不构成差异。</li></ul>
+      </div>
+      <div class="card">
+        <h4>② 核心业务数据在哪个系统里？</h4>
+        <ul><li>决定连接器覆盖是否够用。</li>
+            <li>本公司存在自研系统与行业系统，<b>需逐项核对第三方 Connector 的覆盖度</b>，不能假设。</li></ul>
+      </div>
+      <div class="card">
+        <h4>③ 场景是通用型还是专业型？</h4>
+        <ul><li>通用办公 → 采购成熟产品性价比高。</li>
+            <li>与本公司审批、治理、对账绑定的场景 → <b>必须自建</b>。</li></ul>
+      </div>
+      <div class="card">
+        <h4>④ 团队有没有 AI 工程能力？</h4>
+        <ul><li>本系统已证明具备（三端 + 平台 + 门禁 + 双环境已交付）。</li>
+            <li>因此"自建落不了地"这一常见风险<b>在本公司不成立</b>。</li></ul>
+      </div>
+    </div>
+
+    <div class="foot"><span>企业 AI 工作台 · 第三方对比与选型建议</span><span>第 3 页 / 共 5 页</span></div>
+  </section>
+
+  <!-- 页 4：真实差异 -->
+  <section class="page">
+    <div class="page-head">
+      <div>
+        <p class="kicker">Chapter 03</p>
+        <h2>各自的真实优势（不含客套）</h2>
+      </div>
+      <span class="page-no">第 4 页 / 共 5 页</span>
+    </div>
+
+    <h3>自建平台真正难以被采购替代的六项</h3>
+    <div class="ok">
+      <ul style="margin:0">
+        <li><strong>业务写操作审批闭环</strong>——"提交申请 → 人工审批 → 执行 → 结果对账"是我们按本公司流程写的。第三方产品给的是通用连接器，不会内置本公司的审批链。</li>
+        <li><strong>组织级邮件治理</strong>——DLP 敏感内容检查、治理策略、定时发送、规则引擎的组合，是面向合规而非个人提效的设计。</li>
+        <li><strong>数据分级与模型可用范围绑定</strong>——不是"选个模型就行"，而是"该模型是否被允许处理这个等级的数据"，越权直接拒绝。</li>
+        <li><strong>用量与账单对账</strong>——公司内部记录与账单逐笔核对，差异单独登记。</li>
+        <li><strong>零坐席成本结构</strong>——员工规模扩大时边际成本只是模型用量，没有按人头的订阅费。</li>
+        <li><strong>改动主权</strong>——流程变化当天可改代码上线，不必等厂商排期或走定制报价。</li>
+      </ul>
+    </div>
+
+    <h3>第三方明显强于我们的六项（必须承认）</h3>
+    <div class="risk">
+      <ul style="margin:0">
+        <li><strong>技能生态</strong>——对方技能市场上万项，我们是十几项内置/已复核扩展。这是量级差距，不是打磨能追上的。</li>
+        <li><strong>7×24 数字员工</strong>——对方有常驻云端的执行体，我们只有随客户端进程运行的任务队列，员工下班后不执行。</li>
+        <li><strong>文档协同与内容生产</strong>——腾讯文档／网盘／乐享原生打通；我们的成果物生成面向"任务产出文件"，不是日常文档共创与资料沉淀。</li>
+        <li><strong>多 IM 触达</strong>——对方可接微信、企微、飞书、钉钉、QQ、Slack、Telegram、Discord；我们只有企微。</li>
+        <li><strong>产品成熟度与迭代速度</strong>——对方官方口径约两天一次更新，有专职团队打磨交互；我们受人力限制。</li>
+        <li><strong>免运维选项</strong>——公有云模式无需我们承担升级、备份与容量规划。</li>
+      </ul>
+    </div>
+
+    <h3>共同点（说明这些不是选型差异）</h3>
+    <p>
+      两者都支持私有化／数据驻留、都提供管理后台（组织、授权、审计、用量）、都支持连接器与 MCP 协议、
+      都覆盖企业微信。因此<strong>不能用"支持私有化"或"有管理后台"作为选择自建的理由</strong>——
+      真正的分界在下面这条。
+    </p>
+
+    <div class="callout">
+      <strong>真正的分界线：管控的归属。</strong>
+      采购产品管的是"员工怎么用 AI"，自建平台管的是"<b>公司的 AI 资源、数据与钱怎么被使用</b>"。
+      前者是效率工具，后者是公司资产的管理面。两者可以并存，但不能互相替代。
+    </div>
+
+    <div class="foot"><span>企业 AI 工作台 · 第三方对比与选型建议</span><span>第 4 页 / 共 5 页</span></div>
+  </section>
+
+  <!-- 页 5：建议 -->
+  <section class="page">
+    <div class="page-head">
+      <div>
+        <p class="kicker">Chapter 04</p>
+        <h2>建议：分层混合，而不是二选一</h2>
+      </div>
+      <span class="page-no">第 5 页 / 共 5 页</span>
+    </div>
+
+    <table>
+      <thead><tr><th style="width:120px">方案</th><th style="width:30%">收益</th><th>代价</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>A · 全部采购</strong><br><small>接入 WorkBuddy 企业版</small></td>
+          <td>最快获得完整生产力（技能市场、文档协同、数字员工、多端触达）；免运维</td>
+          <td>按坐席订阅（$40／坐席／月量级）随人数线性增长；审批链与对账需适配对方模型；
+              <b>公司级模型用量与成本不再由我们掌握</b>；深度定制受厂商路线约束</td>
+        </tr>
+        <tr>
+          <td><strong>B · 维持自建</strong><br><small>现状路线</small></td>
+          <td>完全可控、零坐席费、流程完全贴合；数据与成本都在公司账上</td>
+          <td>技能生态与文档协同需自建（成本极高且难做好）；无 7×24 数字员工；迭代速度受人力限制</td>
+        </tr>
+        <tr style="background:#FBFCFE">
+          <td><strong>C · 分层混合</strong><br><small>建议方案</small></td>
+          <td><b>管理面留在自建，生产力面引入成熟产品</b>：既拿到技能生态与文档协同，又保住模型、数据、成本与审批的公司控制权</td>
+          <td>需要一次集成投入（统一身份、模型出口、数据分级策略对齐）；两套系统的员工入口需要设计</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>方案 C 的三条落地要点</h3>
+    <div class="cards">
+      <div class="card">
+        <h4>① 模型调用统一走我们的网关</h4>
+        <ul>
+          <li>第三方工具需要调模型时，<b>出口指向公司 AI 网关</b>。</li>
+          <li>结果：员工无论用哪个工具，<b>用量、成本、数据分级判定仍在公司账上</b>，不会形成"账外 AI 消费"。</li>
+          <li>这也是我们自建网关最不可替代的价值。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>② 身份与目录对齐，不建第二套账号</h4>
+        <ul>
+          <li>以企业微信身份为唯一入口，第三方走同一身份源。</li>
+          <li>员工离职／调岗时，<b>一处失效、处处失效</b>。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>③ 数据分级策略在网关侧统一执行</h4>
+        <ul>
+          <li>机密级以上数据不出内网这条规则，<b>由我们的网关强制</b>，不依赖第三方自觉。</li>
+          <li>自建平台继续承担审批、审计、对账；通用生产力交给成熟产品。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>④ 自建平台的定位随之收敛</h4>
+        <ul>
+          <li>从"什么都要做"转为<b>专注做公司级管控面与本公司特有流程</b>。</li>
+          <li>可显著降低我们的人力压力，也避免在技能生态这种量级差距上做无效投入。</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>采购前需要厂商书面答复并验证的五件事</h3>
+    <div class="note">
+      <ol style="margin:0; padding-left:20px">
+        <li><strong>私有化版本的实际交付范围与报价</strong>——"支持私有化"与"私有化能覆盖哪些能力"是两件事，需逐项确认。</li>
+        <li><strong>Connector 对现有系统的覆盖度</strong>——逐个核对本公司自研系统与行业系统的可接入性，不接受"可定制"的笼统答复。</li>
+        <li><strong>"全链路安全防护"的具体技术措施</strong>——是否支持我们自己的模型出口、能否接受我们的数据分级策略、日志能否导出供我们审计。</li>
+        <li><strong>技能市场技能的安全审核机制</strong>——上万技能中企业能否按白名单管控、能否禁用与撤权。</li>
+        <li><strong>积分制下的真实 TCO</strong>——按本公司实际用量试算三年成本，与"自建运维 + 模型用量"做同口径比较。</li>
+      </ol>
+    </div>
+
+    <div class="foot"><span>企业 AI 工作台 · 第三方对比与选型建议</span><span>第 5 页 / 共 5 页</span></div>
+  </section>
+
+</div>
+</body>
+</html>
